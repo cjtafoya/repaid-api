@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: fair-share-api_development
+
+test:
+  <<: *default
+  database: fair-share-api_test
+
+production:
+  <<: *default
+  database: fair-share-api_production
+  username: fair-share-api
+  password: <%= ENV['FAIR-SHARE-API_DATABASE_PASSWORD'] %>
