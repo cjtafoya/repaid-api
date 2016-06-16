@@ -27,7 +27,7 @@ class Api::V1::GatheringsController < ApplicationController
   end
 
   def gathering_params
-    params.require(:gathering).permit(:name, :user_id)
+    params.require(:data).require(:attributes).permit(:name, :tagline, :user_id)
   end
 
 end
