@@ -1,11 +1,11 @@
 class Api::V1::EventsController < ApplicationController
 
   def index
-    render json: Event.all
+    render json: Event.includes(:groups, :attendees, :expenses), include: ['attendees', 'groups', 'user', 'expenses']
   end
 
   def show
-    render json: event
+    render json: event, include: ['attendees', 'groups', 'user']
   end
 
   def create
