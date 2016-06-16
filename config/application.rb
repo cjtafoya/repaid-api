@@ -9,5 +9,11 @@ Bundler.require(*Rails.groups)
 module FairShareApi
   class Application < Rails::Application
     config.active_record.raise_in_transactional_callbacks = true
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :patch, :options, :head]
+      end
+    end
   end
 end
