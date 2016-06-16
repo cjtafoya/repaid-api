@@ -1,4 +1,4 @@
-class Event < ActiveRecord::Base
+class Gathering < ActiveRecord::Base
   belongs_to :user
   has_many   :attendees
   has_many   :groups
