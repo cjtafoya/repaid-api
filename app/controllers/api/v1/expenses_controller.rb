@@ -27,7 +27,9 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def expense_params
-    ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    output = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    output.delete(:gathering_id) if output.keys.include?(:gathering_id)
+    output
   end
 
 end

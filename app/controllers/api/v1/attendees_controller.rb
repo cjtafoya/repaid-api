@@ -9,7 +9,6 @@ class Api::V1::AttendeesController < ApplicationController
   end
 
   def create
-    binding.pry
     render json: Attendee.create(attendee_params)
   end
 
