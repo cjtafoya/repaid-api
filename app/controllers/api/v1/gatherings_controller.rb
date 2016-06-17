@@ -5,7 +5,7 @@ class Api::V1::GatheringsController < ApplicationController
   end
 
   def show
-    render json: gathering, include: ['attendees', 'groups', 'user']
+    render json: gathering, include: ['attendees', 'groups', 'user', 'expenses']
   end
 
   def create

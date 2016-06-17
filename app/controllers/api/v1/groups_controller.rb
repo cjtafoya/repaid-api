@@ -27,7 +27,9 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name)
+    name = params.require(:data).require(:attributes).require(:name)
+    gatheringid = params.require(:data).require(:relationships).require(:gathering).require(:data).require(:id)
+    { name: name, gathering_id: gatheringid }
   end
 
 end

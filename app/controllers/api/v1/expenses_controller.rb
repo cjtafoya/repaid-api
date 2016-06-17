@@ -27,7 +27,11 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:name)
+    name = params.require(:data).require(:attributes).require(:name)
+    amount = params.require(:data).require(:attributes).require(:amount)
+    groupid = params.require(:data).require(:attributes).require("group-id")
+    attendeeid = params.require(:data).require(:attributes).require("attendee-id")
+    { name: name, amount: amount, group_id: groupid, attendee_id: attendeeid }
   end
 
 end
