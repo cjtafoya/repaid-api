@@ -27,9 +27,10 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def group_params
-    name = params.require(:data).require(:attributes).require(:name)
-    gatheringid = params.require(:data).require(:relationships).require(:gathering).require(:data).require(:id)
-    { name: name, gathering_id: gatheringid }
+    output = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    output.delete(:group_id) if output.keys.include?(:group_id)
+    output.delete(:attendee_id) if output.keys.include?(:attendee_id)
+    output
   end
 
 end
