@@ -29,7 +29,14 @@ class Api::V1::AttendeesController < ApplicationController
   def attendee_params
     name = params.require(:data).require(:attributes).require(:name)
     gatheringid = params.require(:data).require(:relationships).require(:gathering).require(:data).require(:id)
-    { name: name, gathering_id: gatheringid }
+    if params.require(:data).require(:relationships).require(:groups).permit(:data)[:data]
+      groupids = params.require(:data).require(:relationships).require(:groups).require(:data).map do |group|
+        group[:id]
+      end
+      { name: name, gathering_id: gatheringid, group_ids: groupids }
+    else
+      { name: name, gathering_id: gatheringid }
+    end
   end
 
 end
