@@ -27,7 +27,9 @@ class Api::V1::AttendeesController < ApplicationController
   end
 
   def attendee_params
-    params.require(:attendee).permit(:name)
+    name = params.require(:data).require(:attributes).require(:name)
+    gatheringid = params.require(:data).require(:relationships).require(:gathering).require(:data).require(:id)
+    { name: name, gathering_id: gatheringid }
   end
 
 end
