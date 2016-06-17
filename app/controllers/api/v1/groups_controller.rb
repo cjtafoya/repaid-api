@@ -9,7 +9,6 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def create
-    binding.pry
     render json: Group.create(group_params)
   end
 
