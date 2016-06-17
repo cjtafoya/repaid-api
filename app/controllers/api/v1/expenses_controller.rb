@@ -27,11 +27,7 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def expense_params
-    name = params.require(:data).require(:attributes).require(:name)
-    amount = params.require(:data).require(:attributes).require(:amount)
-    groupid = params.require(:data).require(:relationships).require(:group).require(:data).require(:id)
-    attendeeid = params.require(:data).require(:relationships).require(:attendee).require(:data).require(:id)
-    { name: name, amount: amount, attendee_id: attendeeid, group_id: groupid }
+    ActiveModelSerializers::Deserialization.jsonapi_parse(params)
   end
 
 end
