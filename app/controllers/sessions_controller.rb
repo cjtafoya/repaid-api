@@ -11,7 +11,12 @@ class SessionsController < ApplicationController
     end
   end
 
+  def self.create_after_login(user)
+    Auth.issue({user: user.id})
+  end
+
   private
+
     def auth_params
       params.require(:auth).permit(:email, :password)
     end

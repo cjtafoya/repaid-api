@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
 
   skip_before_action :authenticate
-  
+
   def index
     render json: User.all
   end
@@ -11,8 +11,8 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    binding.pry
-    render json: User.create(user_params)
+    user = User.create(user_params)
+    render json: user
   end
 
   def update
