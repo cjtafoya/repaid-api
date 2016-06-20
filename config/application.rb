@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module FairShareApi
   class Application < Rails::Application
+    config.autoload_paths << Rails.root.join('lib')
     config.active_record.raise_in_transactional_callbacks = true
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do

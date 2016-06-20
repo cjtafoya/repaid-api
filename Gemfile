@@ -7,3 +7,6 @@ gem 'pg'
 gem 'active_model_serializers'
 gem 'rack-cors'
 gem 'pry-rails'
+gem 'bcrypt'
+gem 'jwt'
+gem 'dotenv-rails', :groups => [:development, :test]
