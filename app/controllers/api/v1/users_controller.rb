@@ -1,5 +1,7 @@
 class Api::V1::UsersController < ApplicationController
 
+  skip_before_action :authenticate
+  
   def index
     render json: User.all
   end
@@ -9,6 +11,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
+    binding.pry
     render json: User.create(user_params)
   end
 
@@ -27,7 +30,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name)
+    ActiveModelSerializers::Deserialization.jsonapi_parse(params)
   end
 
 end

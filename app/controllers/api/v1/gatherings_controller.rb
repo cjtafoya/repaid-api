@@ -1,7 +1,7 @@
 class Api::V1::GatheringsController < ApplicationController
 
   def index
-    render json: Gathering.includes(:groups, :attendees, :expenses), include: ['attendees', 'groups', 'user', 'expenses']
+    render json: current_user.gatherings.includes(:groups, :attendees, :expenses), include: ['attendees', 'groups', 'user', 'expenses']
   end
 
   def show
@@ -23,11 +23,13 @@ class Api::V1::GatheringsController < ApplicationController
   private
 
   def gathering
-    Gathering.find(params[:id])
+    current_user.gatherings.includes(:groups, :attendees, :expenses).find(params[:id])
   end
 
   def gathering_params
-    params.require(:data).require(:attributes).permit(:name, :tagline, :user_id)
+    output = params.require(:data).require(:attributes).permit(:name, :tagline, :user_id)
+    output[:user_id] = Auth.decode(token)["user"]
+    output
   end
 
 end
