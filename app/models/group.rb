@@ -6,8 +6,8 @@ class Group < ActiveRecord::Base
 
   def update_all(amount)
     attendees = self.attendees
-    new_amount_per_person = self.amount_per_person += (amount / attendees.length)
-    self.update(amount_per_person: new_amount_per_person)
+    new_amount_per_person = self.amount_per_person + (amount / attendees.length)
+    self.update(amount_per_person: (new_amount_per_person).round(2))
     self.save
     
     attendees.each do |attendee| 
