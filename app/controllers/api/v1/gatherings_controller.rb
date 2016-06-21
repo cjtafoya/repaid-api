@@ -9,7 +9,15 @@ class Api::V1::GatheringsController < ApplicationController
   end
 
   def create
-    render json: Gathering.create(gathering_params)
+    gathering = Gathering.create(gathering_params)
+    group = Group.create(name: "Everyone")
+    attendee = Attendee.create(name: "Me")
+    gathering.attendees << attendee
+    group.attendees << attendee
+    group.save
+    gathering.groups << group
+    gathering.save
+    render json: gathering
   end
 
   def update
