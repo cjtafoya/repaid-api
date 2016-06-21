@@ -17,13 +17,13 @@ class Attendee < ActiveRecord::Base
     end
 
     new_balance = (new_amount_due - self.total_expenses)
-    self.update(amount_due: new_amount_due, balance: new_balance)
+    self.update(amount_due: (new_amount_due).round(2), balance: (new_balance).round(2))
     self.save
   end
 
   def update_balance(expense)
     x = self.amount_due - expense
-    self.update(balance: x)
+    self.update(balance: (x).round(2))
     self.save
   end
 end
