@@ -6,7 +6,7 @@ class Attendee < ActiveRecord::Base
 
   def update_self_expenses(amount)
     new_total_expenses = self.total_expenses + amount 
-    self.update(total_expenses: new_total_expenses) 
+    self.update(total_expenses: (new_total_expenses).round(2)) 
     self.save
   end
 
