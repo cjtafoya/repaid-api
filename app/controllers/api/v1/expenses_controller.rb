@@ -9,7 +9,9 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   def create
-    render json: Expense.create(expense_params)
+    expense = Expense.create(expense_params)
+    update_assoc_expenses(expense)
+    render json: expense
   end
 
   def update
@@ -21,7 +23,6 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   private
-
   def expense
     Expense.find(params[:id])
   end
@@ -30,6 +31,14 @@ class Api::V1::ExpensesController < ApplicationController
     output = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     output.delete(:gathering_id) if output.keys.include?(:gathering_id)
     output
+  end
+
+  def update_assoc_expenses(expense)
+    attendee = Attendee.find(expense.attendee_id)
+    attendee.update_self_expenses(expense.amount)
+    group = Group.find(expense.group_id)
+    group.update_all(expense.amount)
+    group.attendees.include?(attendee) ? "" : attendee.update_balance(expense.amount)
   end
 
 end
