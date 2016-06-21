@@ -9,7 +9,11 @@ class Api::V1::AttendeesController < ApplicationController
   end
 
   def create
-    render json: Attendee.create(attendee_params)
+    attendee = Attendee.create(attendee_params)
+    group = Group.where(gathering_id: attendee_params[:gathering_id], name: "Everyone")
+    attendee.groups << group if !attendee.groups.include?(group)
+    attendee.save
+    render json: attendee
   end
 
   def update
