@@ -10,7 +10,7 @@ class Api::V1::ExpensesController < ApplicationController
 
   def create
     expense = Expense.create(expense_params)
-    update_assoc_expenses(expense)
+    create_expense_updates(expense)
     render json: expense
   end
 
@@ -33,12 +33,15 @@ class Api::V1::ExpensesController < ApplicationController
     output
   end
 
-  def update_assoc_expenses(expense)
+  def create_expense_updates(expense)
     attendee = Attendee.find(expense.attendee_id)
-    attendee.update_self_expenses(expense.amount)
+    attendee.update_expenses(expense.amount)
+
     group = Group.find(expense.group_id)
-    group.update_all(expense.amount)
-    group.attendees.include?(attendee) ? "" : attendee.update_balance(expense.amount)
+    group.update_expense_per_person
+    group.update_attendee_balances
+
+    attendee.update_balance if !attendee.groups.include?(group)
   end
 
 end

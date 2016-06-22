@@ -10,9 +10,10 @@ class Api::V1::AttendeesController < ApplicationController
 
   def create
     attendee = Attendee.create(attendee_params)
-    group = Group.where(gathering_id: attendee_params[:gathering_id], name: "Everyone").first
+    group = Group.where(gathering_id: attendee_params[:gathering_id]).first
     attendee.groups << group if !attendee.groups.include?(group)
     attendee.save
+    update_associated(attendee.groups)
     render json: attendee
   end
 
@@ -25,7 +26,6 @@ class Api::V1::AttendeesController < ApplicationController
   end
 
   private
-
   def attendee
     Attendee.find(params[:id])
   end
@@ -35,6 +35,13 @@ class Api::V1::AttendeesController < ApplicationController
     output.delete(:group_id) if output.keys.include?(:group_id)
     output.delete(:attendee_id) if output.keys.include?(:attendee_id)
     output
+  end
+
+  def update_associated(groups)
+    groups.each do |group|
+      group.update_expense_per_person
+      group.update_attendee_balances
+    end
   end
 
 end

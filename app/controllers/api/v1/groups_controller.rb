@@ -13,7 +13,9 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def update
-    render json: group.update(group_params)
+    group.update(group_params)
+    update_associated(group)
+    render json: group
   end
 
   def destroy
@@ -21,7 +23,6 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   private
-
   def group
     Group.find(params[:id])
   end
@@ -33,4 +34,8 @@ class Api::V1::GroupsController < ApplicationController
     output
   end
 
+  def update_associated(group)
+    group.update_expense_per_person
+    group.update_attendee_balances
+  end
 end

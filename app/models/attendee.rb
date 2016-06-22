@@ -4,26 +4,25 @@ class Attendee < ActiveRecord::Base
   has_many   :attendee_groups
   has_many   :groups, through: :attendee_groups
 
-  def update_self_expenses(amount)
-    new_total_expenses = self.total_expenses + amount 
-    self.update(total_expenses: (new_total_expenses).round(2)) 
+  def update_expenses(amount)
+    new_total_expenses = (self.total_expenses + amount).round(2)
+    self.update(total_expenses: new_total_expenses)
     self.save
   end
 
-  def update_all(amount)
+  def update_amount_due
     new_amount_due = 0
     self.groups.each do |group|
       new_amount_due += group.amount_per_person
     end
-
-    new_balance = (new_amount_due - self.total_expenses)
-    self.update(amount_due: (new_amount_due).round(2), balance: (new_balance).round(2))
+    self.update(amount_due: new_amount_due)
     self.save
   end
 
-  def update_balance(expense)
-    x = self.amount_due - expense
-    self.update(balance: (x).round(2))
+  def update_balance
+    new_balance = (self.amount_due - self.total_expenses).round(2)
+    self.update(balance: new_balance)
     self.save
   end
+
 end

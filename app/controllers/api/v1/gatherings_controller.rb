@@ -1,7 +1,7 @@
 class Api::V1::GatheringsController < ApplicationController
 
   def index
-    render json: current_user.gatherings.includes(:groups, :attendees, :expenses), include: ['attendees', 'groups', 'user', 'expenses']
+    render json: current_user.gatherings.includes(:groups, :attendees), include: ['attendees', 'groups', 'user']
   end
 
   def show
